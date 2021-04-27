@@ -57,7 +57,7 @@ type Crawler struct {
 	fetcher Fetcher
 }
 
-func (crl *Crawler) Crawl(url string, depth int, cr chan *CrawlResult) {
+func (crl *Crawler) Crawl(url string, depth int, cr chan<- *CrawlResult) {
 	defer close(cr)
 	wg := sync.WaitGroup{}
 	wg.Add(1)
@@ -65,7 +65,7 @@ func (crl *Crawler) Crawl(url string, depth int, cr chan *CrawlResult) {
 	wg.Wait()
 }
 
-func (crl *Crawler) crawlRecursively(url string, depth int, cr chan *CrawlResult, wg *sync.WaitGroup) {
+func (crl *Crawler) crawlRecursively(url string, depth int, cr chan<- *CrawlResult, wg *sync.WaitGroup) {
 	defer wg.Done()
 	if depth <= 0 || crl.cache.Has(url) {
 		return
